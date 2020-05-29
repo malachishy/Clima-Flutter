@@ -17,3 +17,7 @@ class Location {
     }
   }
 }
+
+// var city = weatherData['name'];
+// var temperature = weatherData['main']['temp'];
+// var condition = weatherData['weather'][0]['id'];
