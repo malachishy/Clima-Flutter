@@ -31,12 +31,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     latitude = location.latitude;
     longitude = location.longitude;
 
+//This line demonstrates why it's good practice to make a variable out of classes.
+//Otherwise, I would have to paste the url property each time I wanted to create a NetworkHelper object.
+
     NetworkHelper networkHelper = NetworkHelper(
         url:
             'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
 
     var weatherData = await networkHelper.getData();
-
   }
 
   @override
