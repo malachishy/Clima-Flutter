@@ -20,17 +20,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
   double latitude;
   double longitude;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future getLocationData() async {
     //Gets the user's current location.
     Location location = Location();
     await location.getCurrentLocation();
     latitude = location.latitude;
     longitude = location.longitude;
+    print(latitude);
+    print(longitude);
 
     //Creates a NetworkHelper object based on the long/lat from getCurrentLocation() call.
     //This line demonstrates why it's good practice to make a variable out of classes.
@@ -50,17 +47,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getLocationData();
+    print('Hello World!');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: RaisedButton(
-          onPressed: () async {
-            print('Hello World!');
-            await getLocationData();
-            print(latitude);
-            print(longitude);
-          },
-          child: Text('Get Location'),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(
+            Colors.pink[900],
+          ),
         ),
       ),
     );
