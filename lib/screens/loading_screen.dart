@@ -24,17 +24,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //Gets the user's current location.
     Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longitude = location.longitude;
-    print(latitude);
-    print(longitude);
+    print(location.latitude);
+    print(location.longitude);
 
     //Creates a NetworkHelper object based on the long/lat from getCurrentLocation() call.
     //This line demonstrates why it's good practice to make a variable out of classes.
     //Otherwise, I would have to paste the url property each time I wanted to create a NetworkHelper object.
     NetworkHelper networkHelper = NetworkHelper(
         url:
-            'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=imperial');
 
     var weatherData = await networkHelper.getData();
     //Switches to the LocationScreen() route.
@@ -50,7 +48,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     getLocationData();
-    print('Hello World!');
+    print('Loading Screen');
   }
 
   @override
