@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/weather.dart';
+import 'package:clima/services/location.dart';
 
 class LocationScreen extends StatefulWidget {
   final locationWeather;
@@ -15,22 +16,32 @@ class _LocationScreenState extends State<LocationScreen> {
   String cityName;
   int temperature;
   int condition;
+  dynamic weatherData;
+  String weatherIcon;
+  String weatherMessage;
 
   @override
   void initState() {
     super.initState();
+    //?When I moved this inside the build() method, the app screen didn't update when I pressed
+    //?location button. Why? I thought setState updated everything inside of the build method. 
+    //*That's exactly why! It's because I had explicity called updateUI(widget.locationWeather)
+    //*inside of the build method. So when the state was set, it was set based on that instance
+    //*of my updateUI() method, I think.
     updateUI(widget.locationWeather);
   }
 
-  void updateUI(dynamic weatherData) {
-    cityName = weatherData['name'];
-    double temp = weatherData['main']['temp'];
-    condition = weatherData['weather'][0]['id'];
-    temperature = temp.toInt();
-
-    print(cityName);
-    print(temperature);
-    print(condition);
+//Variables that are initialized inside methods only exist within that method.
+//Variables that are updated inside a method keep this updated value even outside the method.
+  void updateUI(dynamic wData) {
+    setState(() {
+      cityName = wData['name'];
+      double temp = wData['main']['temp'];
+      condition = wData['weather'][0]['id'];
+      temperature = temp.toInt();
+      weatherIcon = WeatherModel().getWeatherIcon(condition);
+      weatherMessage = WeatherModel().getMessage(temperature);
+    });
   }
 
   @override
@@ -55,7 +66,12 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      weatherData = await Location().getLocationData();
+                      updateUI(weatherData);
+                      print('button pressed');
+                      print(cityName);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
@@ -79,7 +95,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      WeatherModel().getWeatherIcon(condition),
+                      weatherIcon,
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -88,8 +104,8 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  WeatherModel().getMessage(temperature) + ' in $cityName',
-                  textAlign: TextAlign.right,
+                  '$weatherMessage in $cityName',
+                  textAlign: TextAlign.left,
                   style: kMessageTextStyle,
                 ),
               ),
