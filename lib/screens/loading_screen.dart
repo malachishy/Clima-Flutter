@@ -39,6 +39,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //todo Add a button that will run goToLocationScreen() when pressed.
+      //todo Figure out a way to only show the progress indicator while the app is actually loading.
       body: Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(
