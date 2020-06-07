@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/weather.dart';
-import 'package:clima/services/location.dart';
 import 'package:clima/screens/city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -58,6 +57,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WeatherModel weatherModel = WeatherModel();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: <Widget>[
                   FlatButton(
                     onPressed: () async {
-                      weatherData = await Location().getLocationData();
+                      weatherData = await weatherModel.getWeatherData();
                       updateUI(weatherData);
                       print(cityName);
                     },

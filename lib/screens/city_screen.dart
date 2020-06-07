@@ -44,7 +44,6 @@ class _CityScreenState extends State<CityScreen> {
               ),
               FlatButton(
                 onPressed: () {
-                  //Todo Exception gets thrown when I press this button. Need to fix.
                   Navigator.pop(context, cityName);
                 },
                 child: Text(
